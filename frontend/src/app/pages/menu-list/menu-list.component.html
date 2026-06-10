@@ -65,7 +65,14 @@
             <app-category-badge *ngIf="categoryFor(item.categoryId, vm.categories) as category" [category]="category" size="sm"></app-category-badge>
             <span *ngIf="!categoryFor(item.categoryId, vm.categories)" class="muted">未分类</span>
           </td>
-          <td>{{ item.price | yuanCurrency }}</td>
+          <td>
+            <ng-container *ngIf="item.specifications.length === 0">{{ item.price | yuanCurrency }}</ng-container>
+            <div *ngIf="item.specifications.length > 0" class="spec-chips">
+              <span *ngFor="let spec of item.specifications; trackBy: trackBySpecId" class="spec-chip">
+                {{ spec.name }} {{ spec.price | yuanCurrency }}
+              </span>
+            </div>
+          </td>
           <td>{{ item.spiceLevel | spiceLevel }}</td>
           <td>
             <span *ngIf="item.isRecommended" class="chip">推荐</span>

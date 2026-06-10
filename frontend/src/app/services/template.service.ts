@@ -213,6 +213,7 @@ export class TemplateService {
       isRecommended: false,
       spiceLevel: SpiceLevel.NONE,
       isVegetarian: false,
+      specifications: [],
       createdAt: 0,
       updatedAt: 0
     };

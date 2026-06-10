@@ -78,4 +78,8 @@ export class MenuListComponent {
   trackByItem(_index: number, item: MenuItem): string {
     return item.id;
   }
+
+  trackBySpecId(_index: number, spec: { id: string }): string {
+    return spec.id;
+  }
 }

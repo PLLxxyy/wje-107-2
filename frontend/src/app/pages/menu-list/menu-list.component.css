@@ -131,6 +131,22 @@ td span {
   color: var(--success);
 }
 
+.spec-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.spec-chip {
+  border-radius: 999px;
+  background: color-mix(in oklch, var(--accent-color) 14%, transparent);
+  color: var(--accent-color);
+  padding: 3px 9px;
+  font-size: 12px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
 .muted,
 .empty {
   color: var(--muted-text);

@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, combineLatest, map } from 'rxjs';
 import { Category, CategoryInput } from '../models/category.model';
 import { SpiceLevel } from '../models/enums';
-import { MenuItem, MenuItemInput, Specification } from '../models/menu-item.model';
+import { MenuItem, MenuItemInput, Specification, SpecificationInput } from '../models/menu-item.model';
 import { StorageService } from './storage.service';
 
 @Injectable({
@@ -19,7 +19,8 @@ export class MenuService {
 
   constructor(private readonly storage: StorageService) {
     const categories = this.storage.get<Category[]>(this.categoryKey, []);
-    const items = this.storage.get<MenuItem[]>(this.itemKey, []);
+    const rawItems = this.storage.get<MenuItem[]>(this.itemKey, []);
+    const items = this.normalizeItems(rawItems);
     const seededCategories = categories.length > 0 ? categories : this.seedCategories();
     const seededItems = items.length > 0 ? items : this.seedItems(seededCategories);
     this.categoriesSubject = new BehaviorSubject<Category[]>(this.sortCategories(seededCategories));
@@ -161,7 +162,14 @@ export class MenuService {
     return Math.max(0, Math.round(value * 100) / 100);
   }
 
-  private toSpecifications(inputs: import('../models/menu-item.model').SpecificationInput[]): Specification[] {
+  private normalizeItems(items: MenuItem[]): MenuItem[] {
+    return items.map((item) => ({
+      ...item,
+      specifications: Array.isArray(item.specifications) ? item.specifications : []
+    }));
+  }
+
+  private toSpecifications(inputs: SpecificationInput[]): Specification[] {
     return (inputs ?? []).map((spec) => ({
       id: this.createId(),
       name: spec.name.trim(),
@@ -209,6 +217,7 @@ export class MenuService {
       isRecommended: row.isRecommended,
       spiceLevel: row.spiceLevel,
       isVegetarian: row.isVegetarian,
+      specifications: row.specifications,
       createdAt: now + index,
       updatedAt: now + index
     }));
