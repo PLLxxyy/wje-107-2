@@ -1,0 +1,33 @@
+.print-paper {
+  position: relative;
+  width: 794px;
+  height: 1123px;
+  overflow: hidden;
+}
+
+.print-header {
+  position: absolute;
+  top: 46px;
+  left: 72px;
+  right: 72px;
+  padding-bottom: 18px;
+  border-bottom: 2px solid;
+  text-align: center;
+}
+
+.print-header p {
+  margin: 0 0 8px;
+  color: color-mix(in oklch, currentColor 72%, transparent);
+  font-size: 15px;
+}
+
+.print-header h1 {
+  margin: 0;
+  font-family: inherit;
+  font-size: 44px;
+  line-height: 1.05;
+}
+
+.print-item {
+  position: absolute;
+}

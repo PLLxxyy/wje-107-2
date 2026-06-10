@@ -1,0 +1,13 @@
+<section
+  class="canvas-item"
+  [class.selected]="selected"
+  [ngStyle]="itemStyles"
+  [appDraggable]="dragData"
+  appResizable
+  (click)="selectItem.emit(layoutItem.id)"
+  (resizeEnd)="resizeItem.emit($event)"
+>
+  <app-menu-item-card [menuItem]="menuItem" [compact]="true"></app-menu-item-card>
+  <button type="button" class="delete-button" aria-label="删除菜品项" (click)="removeItem.emit(layoutItem.id); $event.stopPropagation()">×</button>
+  <span class="resize-handle" data-resize-handle="true"></span>
+</section>

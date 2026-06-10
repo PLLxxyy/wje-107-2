@@ -1,0 +1,69 @@
+<main class="item-form-page fade-in">
+  <header class="page-header">
+    <div>
+      <p>{{ isEditing ? '编辑菜品' : '新建菜品' }}</p>
+      <h1>{{ isEditing ? form.name : '添加一道菜' }}</h1>
+    </div>
+    <a routerLink="/menu" class="toolbar-button">返回列表</a>
+  </header>
+
+  <section class="form-shell panel">
+    <form class="item-form" (ngSubmit)="save()">
+      <label>
+        <span>名称</span>
+        <input name="name" [(ngModel)]="form.name" (ngModelChange)="markDirty()" maxlength="40" required>
+      </label>
+      <label>
+        <span>描述（200 字内）</span>
+        <textarea name="description" [(ngModel)]="form.description" (ngModelChange)="markDirty()" maxlength="200" rows="5"></textarea>
+      </label>
+      <div class="grid-two">
+        <label>
+          <span>价格</span>
+          <input type="number" name="price" [(ngModel)]="form.price" (ngModelChange)="markDirty()" min="0" step="0.01">
+        </label>
+        <label>
+          <span>分类</span>
+          <select name="categoryId" [(ngModel)]="form.categoryId" (ngModelChange)="markDirty()">
+            <option value="">未分类</option>
+            <option *ngFor="let category of categories$ | async" [value]="category.id">{{ category.icon }} {{ category.name }}</option>
+          </select>
+        </label>
+      </div>
+      <div class="grid-two">
+        <label>
+          <span>辣度</span>
+          <select name="spiceLevel" [(ngModel)]="form.spiceLevel" (ngModelChange)="markDirty()">
+            <option *ngFor="let option of spiceOptions" [value]="option.value">{{ option.label }}</option>
+          </select>
+        </label>
+        <label>
+          <span>上传图片</span>
+          <input type="file" accept="image/*" (change)="onFileSelected($event)">
+        </label>
+      </div>
+      <div class="checks">
+        <label>
+          <input type="checkbox" name="isRecommended" [(ngModel)]="form.isRecommended" (ngModelChange)="markDirty()">
+          <span>推荐菜</span>
+        </label>
+        <label>
+          <input type="checkbox" name="isVegetarian" [(ngModel)]="form.isVegetarian" (ngModelChange)="markDirty()">
+          <span>素食</span>
+        </label>
+      </div>
+      <p class="error" *ngIf="errorMessage">{{ errorMessage }}</p>
+      <button type="submit" class="toolbar-button primary">{{ isEditing ? '保存修改' : '创建菜品' }}</button>
+    </form>
+
+    <aside class="preview-card">
+      <div class="image-preview" [class.with-image]="hasImage">
+        <img *ngIf="hasImage" [src]="form.image" [alt]="form.name || '菜品图片'">
+        <span *ngIf="!hasImage">{{ imageIcon }}</span>
+      </div>
+      <h2>{{ form.name || '菜品名称' }}</h2>
+      <p>{{ form.description || '菜品描述会显示在这里。' }}</p>
+      <strong>{{ pricePreview }}</strong>
+    </aside>
+  </section>
+</main>

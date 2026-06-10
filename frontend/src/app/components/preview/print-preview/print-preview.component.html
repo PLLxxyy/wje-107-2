@@ -1,0 +1,12 @@
+<div id="print-export-area" class="print-paper paper-shadow" [ngStyle]="paperStyle">
+  <header class="print-header" [style.border-color]="layout.style.accentColor">
+    <p>{{ layout.style.subtitleText }}</p>
+    <h1>{{ layout.style.headerText }}</h1>
+  </header>
+
+  <ng-container *ngFor="let item of layout.items; trackBy: trackByLayoutItem">
+    <article *ngIf="menuItemFor(item) as menuItem" class="print-item" [ngStyle]="itemStyle(item)">
+      <app-menu-item-card [menuItem]="menuItem" [compact]="true"></app-menu-item-card>
+    </article>
+  </ng-container>
+</div>

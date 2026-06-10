@@ -1,0 +1,69 @@
+<main class="template-page fade-in" *ngIf="viewModel$ | async as vm">
+  <header class="page-header">
+    <div>
+      <p>模板画廊</p>
+      <h1>选择菜单版式</h1>
+    </div>
+    <button type="button" class="toolbar-button primary" (click)="applySelected()">应用模板</button>
+  </header>
+
+  <section class="template-layout">
+    <div class="template-grid">
+      <article
+        *ngFor="let template of templates"
+        class="template-card panel"
+        [class.selected]="template.type === selectedTemplate.type"
+        (click)="selectTemplate(template)"
+      >
+        <app-template-preview
+          [templateType]="template.type"
+          [layoutStyle]="styleFor(template)"
+          [items]="template.previewItems"
+        ></app-template-preview>
+        <div>
+          <h2>{{ template.name }}</h2>
+          <p>{{ template.description }}</p>
+        </div>
+      </article>
+    </div>
+
+    <aside class="style-editor panel">
+      <h2>{{ selectedTemplate.name }}自定义</h2>
+      <label>
+        <span>标题</span>
+        <input [(ngModel)]="styleDraft.headerText" maxlength="30">
+      </label>
+      <label>
+        <span>副标题</span>
+        <input [(ngModel)]="styleDraft.subtitleText" maxlength="48">
+      </label>
+      <div class="color-row">
+        <label>
+          <span>背景</span>
+          <input type="color" [(ngModel)]="styleDraft.bgColor">
+        </label>
+        <label>
+          <span>文字</span>
+          <input type="color" [(ngModel)]="styleDraft.textColor">
+        </label>
+        <label>
+          <span>强调</span>
+          <input type="color" [(ngModel)]="styleDraft.accentColor">
+        </label>
+      </div>
+      <label>
+        <span>字体</span>
+        <select [(ngModel)]="styleDraft.fontFamily">
+          <option value="Georgia, Songti SC, serif">经典衬线</option>
+          <option value="Avenir Next, PingFang SC, sans-serif">现代无衬线</option>
+          <option value="Kaiti SC, STKaiti, serif">雅致楷体</option>
+        </select>
+      </label>
+      <app-template-preview
+        [templateType]="selectedTemplate.type"
+        [layoutStyle]="styleDraft"
+        [items]="selectedTemplate.previewItems"
+      ></app-template-preview>
+    </aside>
+  </section>
+</main>

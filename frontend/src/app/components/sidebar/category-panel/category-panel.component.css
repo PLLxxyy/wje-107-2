@@ -1,0 +1,27 @@
+.category-panel {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.category-button {
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  padding: 0;
+}
+
+.category-button:first-child {
+  min-height: 26px;
+  padding: 3px 10px;
+  border: 1px solid var(--line);
+  background: var(--surface);
+  color: var(--muted-text);
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.category-button.active {
+  outline: 2px solid var(--primary-color);
+  outline-offset: 2px;
+}

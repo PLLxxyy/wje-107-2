@@ -1,0 +1,103 @@
+.settings-page {
+  display: grid;
+  gap: 18px;
+  padding: 24px;
+}
+
+.page-header {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.page-header p {
+  margin: 0 0 4px;
+  color: var(--accent-color);
+  font-size: 13px;
+  font-weight: 900;
+}
+
+.page-header h1 {
+  margin: 0;
+  font-family: Georgia, "Songti SC", serif;
+  font-size: 34px;
+}
+
+.usage {
+  color: var(--muted-text);
+  font-weight: 800;
+}
+
+.settings-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 18px;
+}
+
+.setting-card {
+  display: grid;
+  gap: 14px;
+  border-radius: 14px;
+  padding: 18px;
+}
+
+h2 {
+  margin: 0;
+  font-size: 20px;
+}
+
+p {
+  margin: 0;
+  color: var(--muted-text);
+  line-height: 1.6;
+}
+
+.theme-choice {
+  display: grid;
+  gap: 4px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: var(--surface);
+  color: var(--app-text);
+  padding: 14px;
+  text-align: left;
+}
+
+.theme-choice.active {
+  border-color: var(--primary-color);
+  background: color-mix(in oklch, var(--primary-color) 12%, var(--surface));
+}
+
+.theme-choice span {
+  color: var(--muted-text);
+  font-size: 13px;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.import-button {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  overflow: hidden;
+}
+
+.import-button input {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+}
+
+.danger {
+  color: var(--danger);
+}
+
+.message {
+  color: var(--success);
+  font-weight: 800;
+}

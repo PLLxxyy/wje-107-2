@@ -1,0 +1,74 @@
+<aside class="property-panel">
+  <section class="property-section">
+    <h2>菜单样式</h2>
+    <label>
+      <span>标题</span>
+      <input [ngModel]="layout.style.headerText" (ngModelChange)="updateStyle('headerText', $event)" maxlength="30">
+    </label>
+    <label>
+      <span>副标题</span>
+      <input [ngModel]="layout.style.subtitleText" (ngModelChange)="updateStyle('subtitleText', $event)" maxlength="48">
+    </label>
+    <div class="color-grid">
+      <label>
+        <span>背景</span>
+        <input type="color" [ngModel]="layout.style.bgColor" (ngModelChange)="updateStyle('bgColor', $event)">
+      </label>
+      <label>
+        <span>文字</span>
+        <input type="color" [ngModel]="layout.style.textColor" (ngModelChange)="updateStyle('textColor', $event)">
+      </label>
+      <label>
+        <span>强调</span>
+        <input type="color" [ngModel]="layout.style.accentColor" (ngModelChange)="updateStyle('accentColor', $event)">
+      </label>
+    </div>
+    <label>
+      <span>字体</span>
+      <select [ngModel]="layout.style.fontFamily" (ngModelChange)="updateStyle('fontFamily', $event)">
+        <option *ngFor="let font of fontFamilies" [value]="font.value">{{ font.label }}</option>
+      </select>
+    </label>
+  </section>
+
+  <section class="property-section selected-section" *ngIf="selectedItem && selectedMenuItem; else noSelection">
+    <div class="selected-title">
+      <h2>{{ selectedMenuItem.name }}</h2>
+      <button type="button" class="remove" (click)="removeItem.emit(selectedItem.id)">删除</button>
+    </div>
+    <div class="number-grid">
+      <label>
+        <span>X</span>
+        <input type="number" [ngModel]="selectedItem.x" (ngModelChange)="updateNumber('x', $event)">
+      </label>
+      <label>
+        <span>Y</span>
+        <input type="number" [ngModel]="selectedItem.y" (ngModelChange)="updateNumber('y', $event)">
+      </label>
+      <label>
+        <span>宽</span>
+        <input type="number" min="130" [ngModel]="selectedItem.width" (ngModelChange)="updateNumber('width', $event)">
+      </label>
+      <label>
+        <span>高</span>
+        <input type="number" min="72" [ngModel]="selectedItem.height" (ngModelChange)="updateNumber('height', $event)">
+      </label>
+      <label>
+        <span>字号</span>
+        <input type="number" min="10" max="32" [ngModel]="selectedItem.fontSize" (ngModelChange)="updateNumber('fontSize', $event)">
+      </label>
+      <label>
+        <span>字形</span>
+        <select [ngModel]="selectedItem.fontStyle" (ngModelChange)="updateFontStyle($event)">
+          <option *ngFor="let option of fontStyles" [value]="option.value">{{ option.label }}</option>
+        </select>
+      </label>
+    </div>
+  </section>
+
+  <ng-template #noSelection>
+    <section class="property-section muted-box">
+      选择画布上的菜品后，可编辑位置、尺寸和字体。
+    </section>
+  </ng-template>
+</aside>

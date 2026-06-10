@@ -1,0 +1,47 @@
+.template-preview {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 794 / 1123;
+  overflow: hidden;
+  border: 1px solid color-mix(in oklch, var(--line) 70%, transparent);
+  border-radius: 8px;
+  font-family: Georgia, "Songti SC", serif;
+}
+
+.preview-title {
+  position: absolute;
+  top: 7%;
+  left: 12%;
+  right: 12%;
+  padding-bottom: 4px;
+  border-bottom: 2px solid;
+  font-size: 9px;
+  font-weight: 800;
+  text-align: center;
+}
+
+.preview-subtitle {
+  position: absolute;
+  top: 11.5%;
+  left: 12%;
+  right: 12%;
+  opacity: 0.68;
+  font-size: 5px;
+  text-align: center;
+}
+
+.preview-item {
+  position: absolute;
+  border-radius: 2px;
+  opacity: 0.36;
+}
+
+.modern .preview-item {
+  border-radius: 5px;
+  opacity: 0.22;
+}
+
+.card-template .preview-item {
+  border-radius: 7px;
+  opacity: 0.32;
+}

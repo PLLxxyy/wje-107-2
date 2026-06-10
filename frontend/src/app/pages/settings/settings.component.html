@@ -1,0 +1,39 @@
+<main class="settings-page fade-in" *ngIf="theme$ | async as theme">
+  <header class="page-header">
+    <div>
+      <p>设置</p>
+      <h1>主题与本地数据</h1>
+    </div>
+    <span class="usage">存储使用 {{ usagePercent }}</span>
+  </header>
+
+  <section class="settings-grid">
+    <article class="panel setting-card">
+      <h2>应用主题</h2>
+      <button
+        *ngFor="let choice of themeChoices"
+        type="button"
+        class="theme-choice"
+        [class.active]="theme === choice.value"
+        (click)="setTheme(choice.value)"
+      >
+        <strong>{{ choice.label }}</strong>
+        <span>{{ choice.description }}</span>
+      </button>
+    </article>
+
+    <article class="panel setting-card">
+      <h2>数据导入导出</h2>
+      <p>所有菜品、分类和布局数据仅保存在当前浏览器 localStorage 中。</p>
+      <div class="actions">
+        <button type="button" class="toolbar-button" (click)="exportData()">导出数据</button>
+        <label class="toolbar-button import-button">
+          导入数据
+          <input type="file" accept="application/json" (change)="importData($event)">
+        </label>
+        <button type="button" class="toolbar-button danger" (click)="resetData()">恢复示例数据</button>
+      </div>
+      <p class="message" *ngIf="importMessage">{{ importMessage }}</p>
+    </article>
+  </section>
+</main>

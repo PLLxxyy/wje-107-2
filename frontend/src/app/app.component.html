@@ -1,0 +1,35 @@
+<div class="app-shell" *ngIf="theme$ | async as theme">
+  <header class="app-header">
+    <a routerLink="/designer" class="brand">
+      <span class="brand-mark">菜</span>
+      <span>
+        <strong>餐厅菜单设计器</strong>
+        <small>本地可视化排版工具</small>
+      </span>
+    </a>
+
+    <nav class="app-nav" aria-label="主导航">
+      <a
+        *ngFor="let item of navItems"
+        [routerLink]="item.path"
+        routerLinkActive="active"
+        [routerLinkActiveOptions]="{ exact: item.path === '/designer' }"
+      >
+        {{ item.label }}
+      </a>
+    </nav>
+
+    <div class="theme-switch" aria-label="主题切换">
+      <button
+        *ngFor="let option of themes"
+        type="button"
+        [class.active]="theme === option.value"
+        (click)="setTheme(option.value)"
+      >
+        {{ option.label }}
+      </button>
+    </div>
+  </header>
+
+  <router-outlet></router-outlet>
+</div>

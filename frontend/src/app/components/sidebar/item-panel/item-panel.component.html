@@ -1,0 +1,17 @@
+<section class="item-panel">
+  <label class="search-field">
+    <span>搜索菜品</span>
+    <input type="search" [(ngModel)]="searchTerm" maxlength="40" aria-label="搜索菜品">
+  </label>
+
+  <div class="item-list">
+    <p *ngIf="filteredItems.length === 0" class="empty">没有匹配的菜品</p>
+    <article
+      *ngFor="let item of filteredItems; trackBy: trackByItem"
+      class="draggable-item"
+      [appDraggable]="dragDataFor(item)"
+    >
+      <app-menu-item-card [menuItem]="item" [compact]="true"></app-menu-item-card>
+    </article>
+  </div>
+</section>

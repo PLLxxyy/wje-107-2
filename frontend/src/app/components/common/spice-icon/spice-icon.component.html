@@ -1,0 +1,4 @@
+<span class="spice-group" [style.min-width.px]="size * 3.3" [attr.aria-label]="peppers.length ? '辣度' : '不辣'">
+  <span *ngFor="let pepper of peppers" class="pepper" [style.font-size.px]="size">🌶️</span>
+  <span *ngIf="peppers.length === 0" class="no-spice" [style.font-size.px]="size">清</span>
+</span>

@@ -1,0 +1,45 @@
+.category-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  min-height: 30px;
+  padding: 5px 10px;
+  border: 1px solid color-mix(in oklch, var(--line) 80%, transparent);
+  border-radius: 999px;
+  background: color-mix(in oklch, var(--surface) 86%, transparent);
+  color: var(--app-text);
+  font-size: 13px;
+  white-space: nowrap;
+}
+
+.badge-sm {
+  min-height: 24px;
+  padding: 3px 8px;
+  font-size: 12px;
+}
+
+.badge-lg {
+  min-height: 36px;
+  padding: 7px 13px;
+  font-size: 15px;
+}
+
+.color-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 999px;
+}
+
+.icon {
+  line-height: 1;
+}
+
+.count {
+  min-width: 20px;
+  padding: 1px 6px;
+  border-radius: 999px;
+  background: var(--surface-strong);
+  color: var(--muted-text);
+  text-align: center;
+  font-weight: 700;
+}

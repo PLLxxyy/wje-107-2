@@ -1,0 +1,44 @@
+.canvas-workspace {
+  min-width: 100%;
+  min-height: 100%;
+  padding: 42px;
+  overflow: auto;
+  background:
+    linear-gradient(135deg, color-mix(in oklch, var(--canvas-bg) 78%, transparent), transparent),
+    var(--canvas-bg);
+}
+
+.menu-paper {
+  position: relative;
+  width: 794px;
+  height: 1123px;
+  margin: 0 auto;
+  overflow: hidden;
+  transform-origin: top left;
+}
+
+.paper-header {
+  position: absolute;
+  top: 46px;
+  left: 72px;
+  right: 72px;
+  z-index: 1;
+  padding-bottom: 18px;
+  border-bottom: 2px solid;
+  text-align: center;
+  pointer-events: none;
+}
+
+.paper-header p {
+  margin: 0 0 8px;
+  color: color-mix(in oklch, currentColor 72%, transparent);
+  font-size: 15px;
+  letter-spacing: 0;
+}
+
+.paper-header h1 {
+  margin: 0;
+  font-family: inherit;
+  font-size: 44px;
+  line-height: 1.05;
+}

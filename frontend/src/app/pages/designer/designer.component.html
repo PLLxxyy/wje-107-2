@@ -1,0 +1,71 @@
+<main class="designer-page fade-in" *ngIf="viewModel$ | async as vm">
+  <header class="designer-toolbar">
+    <div class="toolbar-group">
+      <button type="button" class="toolbar-button" [disabled]="!vm.history.canUndo" (click)="undo(vm.layout)">↶ 撤销</button>
+      <button type="button" class="toolbar-button" [disabled]="!vm.history.canRedo" (click)="redo(vm.layout)">↷ 重做</button>
+      <select [ngModel]="vm.layout.templateType" (ngModelChange)="applyTemplate($event)" aria-label="切换模板">
+        <option *ngFor="let template of templates" [value]="template.type">{{ template.name }}</option>
+      </select>
+    </div>
+    <div class="toolbar-group">
+      <button type="button" class="toolbar-button" (click)="showGrid = !showGrid">{{ showGrid ? '隐藏网格' : '显示网格' }}</button>
+      <button type="button" class="toolbar-button" (click)="setZoom(zoom - 0.08)">缩小</button>
+      <span class="zoom-label">{{ (zoom * 100).toFixed(0) }}%</span>
+      <button type="button" class="toolbar-button" (click)="setZoom(zoom + 0.08)">放大</button>
+      <button type="button" class="toolbar-button" (click)="movePan(-30, 0)">左移</button>
+      <button type="button" class="toolbar-button" (click)="movePan(30, 0)">右移</button>
+    </div>
+    <div class="toolbar-group end">
+      <span class="save-notice" *ngIf="saveNotice">{{ saveNotice }}</span>
+      <button type="button" class="toolbar-button" (click)="saveLayout()">保存布局</button>
+      <a routerLink="/preview" class="toolbar-button">全屏预览</a>
+      <button type="button" class="toolbar-button primary" (click)="exportPng()">导出 PNG</button>
+    </div>
+  </header>
+
+  <aside class="left-panel panel">
+    <div class="panel-heading">
+      <p>素材</p>
+      <h1>菜品库</h1>
+    </div>
+    <app-category-panel
+      [categories]="vm.categories"
+      [counts]="vm.counts"
+      [selectedCategoryId]="selectedCategoryId"
+      (categoryChange)="selectedCategoryId = $event"
+    ></app-category-panel>
+    <app-item-panel
+      [items]="vm.items"
+      [categories]="vm.categories"
+      [selectedCategoryId]="selectedCategoryId"
+    ></app-item-panel>
+  </aside>
+
+  <section class="canvas-column">
+    <app-menu-canvas
+      [layout]="vm.layout"
+      [menuItems]="vm.items"
+      [selectedItemId]="selectedItemId"
+      [zoom]="zoom"
+      [panX]="panX"
+      [panY]="panY"
+      [showGrid]="showGrid"
+      (selectionChange)="selectedItemId = $event"
+    ></app-menu-canvas>
+  </section>
+
+  <aside class="right-panel panel">
+    <div class="panel-heading">
+      <p>属性</p>
+      <h2>精确调整</h2>
+    </div>
+    <app-property-panel
+      [layout]="vm.layout"
+      [selectedItem]="selectedItem(vm.layout)"
+      [selectedMenuItem]="selectedMenuItem(vm.layout, vm.items)"
+      (itemChange)="updateSelectedItem($event)"
+      (styleChange)="updateStyle($event)"
+      (removeItem)="removeSelectedItem($event)"
+    ></app-property-panel>
+  </aside>
+</main>

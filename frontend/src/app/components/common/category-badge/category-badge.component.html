@@ -1,0 +1,6 @@
+<span class="category-badge" [class.badge-sm]="size === 'sm'" [class.badge-lg]="size === 'lg'">
+  <span class="color-dot" [style.background]="category.color"></span>
+  <span class="icon">{{ category.icon }}</span>
+  <span>{{ category.name }}</span>
+  <span *ngIf="showCount" class="count">{{ count }}</span>
+</span>

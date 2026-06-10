@@ -1,0 +1,57 @@
+<main class="category-page fade-in" *ngIf="viewModel$ | async as vm">
+  <header class="page-header">
+    <div>
+      <p>分类管理</p>
+      <h1>组织菜单结构</h1>
+    </div>
+    <span class="hint">拖动分类行可调整顺序</span>
+  </header>
+
+  <section class="category-layout">
+    <form class="category-form panel" (ngSubmit)="submit(vm.categories)">
+      <h2>{{ editingId ? '编辑分类' : '新建分类' }}</h2>
+      <label>
+        <span>名称</span>
+        <input name="name" [(ngModel)]="form.name" maxlength="20" required>
+      </label>
+      <label>
+        <span>颜色</span>
+        <input type="color" name="color" [(ngModel)]="form.color">
+      </label>
+      <label>
+        <span>图标</span>
+        <input name="icon" [(ngModel)]="form.icon" maxlength="4">
+      </label>
+      <div class="form-actions">
+        <button type="button" class="toolbar-button" *ngIf="editingId" (click)="cancelEdit(vm.categories.length + 1)">取消</button>
+        <button type="submit" class="toolbar-button primary">{{ editingId ? '保存分类' : '创建分类' }}</button>
+      </div>
+    </form>
+
+    <section class="category-list panel">
+      <article
+        *ngFor="let category of vm.categories; trackBy: trackByCategory"
+        class="category-row"
+        [attr.data-category-id]="category.id"
+        [appDraggable]="dragDataFor(category)"
+      >
+        <div class="drag-mark">⋮⋮</div>
+        <app-category-badge [category]="category" size="lg" [showCount]="true" [count]="vm.counts[category.id] || 0"></app-category-badge>
+        <span class="sort">排序 {{ category.sortOrder }}</span>
+        <div class="row-actions">
+          <button type="button" class="toolbar-button" (click)="startEdit(category)">编辑</button>
+          <button type="button" class="toolbar-button danger" (click)="deleteCandidate = category">删除</button>
+        </div>
+      </article>
+    </section>
+  </section>
+
+  <app-confirm-dialog
+    [open]="deleteCandidate !== null"
+    title="删除分类"
+    [message]="'删除“' + (deleteCandidate?.name || '') + '”后，关联菜品会变为未分类。'"
+    confirmLabel="删除"
+    (confirm)="confirmDelete()"
+    (cancel)="deleteCandidate = null"
+  ></app-confirm-dialog>
+</main>

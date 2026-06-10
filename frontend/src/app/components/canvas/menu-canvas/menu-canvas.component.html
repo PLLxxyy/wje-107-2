@@ -1,0 +1,27 @@
+<div class="canvas-workspace" (click)="selectCanvas()">
+  <div
+    #paper
+    id="menu-export-area"
+    class="menu-paper paper-shadow"
+    [ngStyle]="paperStyle"
+    (click)="$event.stopPropagation()"
+  >
+    <app-grid-overlay [visible]="showGrid"></app-grid-overlay>
+    <header class="paper-header" [style.border-color]="layout.style.accentColor">
+      <p>{{ layout.style.subtitleText }}</p>
+      <h1>{{ layout.style.headerText }}</h1>
+    </header>
+    <ng-container *ngFor="let item of layout.items; trackBy: trackByLayoutItem">
+      <app-canvas-item
+        *ngIf="menuItemFor(item) as menuItem"
+        [layoutItem]="item"
+        [menuItem]="menuItem"
+        [layoutStyle]="layout.style"
+        [selected]="selectedItemId === item.id"
+        (selectItem)="selectItem($event)"
+        (resizeItem)="resizeItem(item.id, $event.width, $event.height)"
+        (removeItem)="removeItem($event)"
+      ></app-canvas-item>
+    </ng-container>
+  </div>
+</div>

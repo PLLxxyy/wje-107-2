@@ -1,0 +1,20 @@
+<article class="menu-item-card" [class.compact]="compact">
+  <div class="thumb" [class.with-image]="hasImage">
+    <img *ngIf="hasImage" [src]="menuItem.image" [alt]="menuItem.name">
+    <span *ngIf="!hasImage">{{ imageIcon }}</span>
+  </div>
+
+  <div class="content">
+    <div class="title-row">
+      <h3>{{ menuItem.name }}</h3>
+      <strong>{{ menuItem.price | yuanCurrency }}</strong>
+    </div>
+    <p *ngIf="!compact">{{ menuItem.description }}</p>
+    <div class="meta-row">
+      <app-spice-icon [level]="menuItem.spiceLevel" [size]="compact ? 12 : 14"></app-spice-icon>
+      <span class="chip">{{ menuItem.spiceLevel | spiceLevel }}</span>
+      <span *ngIf="menuItem.isRecommended" class="chip accent">推荐</span>
+      <span *ngIf="menuItem.isVegetarian" class="chip green">素食</span>
+    </div>
+  </div>
+</article>

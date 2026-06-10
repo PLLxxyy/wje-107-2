@@ -1,0 +1,17 @@
+<main class="preview-page" [ngClass]="{ 'dark-desk': darkDesk }" *ngIf="viewModel$ | async as vm">
+  <div class="preview-stage" #previewHost>
+    <div class="paper-scale" [style.transform]="'scale(' + zoom + ')'">
+      <app-print-preview [layout]="vm.layout" [menuItems]="vm.items"></app-print-preview>
+    </div>
+  </div>
+
+  <nav class="floating-toolbar">
+    <a routerLink="/designer" class="toolbar-button">返回编辑</a>
+    <button type="button" class="toolbar-button" (click)="setZoom(zoom - 0.1)">缩小</button>
+    <span>{{ (zoom * 100).toFixed(0) }}%</span>
+    <button type="button" class="toolbar-button" (click)="setZoom(zoom + 0.1)">放大</button>
+    <button type="button" class="toolbar-button" (click)="darkDesk = !darkDesk">{{ darkDesk ? '亮色背景' : '暗色背景' }}</button>
+    <button type="button" class="toolbar-button" (click)="print()">打印</button>
+    <button type="button" class="toolbar-button primary" (click)="exportPng()">导出 PNG</button>
+  </nav>
+</main>

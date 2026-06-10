@@ -1,0 +1,42 @@
+.dialog-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  background: rgba(18, 12, 8, 0.48);
+}
+
+.dialog {
+  width: min(420px, 100%);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: var(--surface);
+  box-shadow: var(--shadow-soft);
+  padding: 24px;
+}
+
+h2 {
+  margin: 0 0 8px;
+  color: var(--app-text);
+  font-size: 20px;
+}
+
+p {
+  margin: 0;
+  color: var(--muted-text);
+  line-height: 1.65;
+}
+
+.actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 22px;
+}
+
+.danger {
+  background: var(--danger);
+  border-color: var(--danger);
+}

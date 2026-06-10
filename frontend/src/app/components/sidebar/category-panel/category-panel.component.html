@@ -1,0 +1,14 @@
+<section class="category-panel">
+  <button type="button" class="category-button" [class.active]="selectedCategoryId === ''" (click)="categoryChange.emit('')">
+    全部菜品
+  </button>
+  <button
+    *ngFor="let category of categories"
+    type="button"
+    class="category-button"
+    [class.active]="selectedCategoryId === category.id"
+    (click)="categoryChange.emit(category.id)"
+  >
+    <app-category-badge [category]="category" size="sm" [showCount]="true" [count]="counts[category.id] || 0"></app-category-badge>
+  </button>
+</section>

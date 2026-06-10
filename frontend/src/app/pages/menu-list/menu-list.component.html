@@ -1,0 +1,93 @@
+<main class="menu-list-page fade-in" *ngIf="viewModel$ | async as vm">
+  <header class="page-header">
+    <div>
+      <p>菜品管理</p>
+      <h1>维护菜单素材</h1>
+    </div>
+    <a routerLink="/items/new" class="toolbar-button primary">新建菜品</a>
+  </header>
+
+  <section class="filters panel">
+    <label>
+      <span>搜索</span>
+      <input type="search" [(ngModel)]="searchTerm" maxlength="40">
+    </label>
+    <label>
+      <span>分类</span>
+      <select [(ngModel)]="categoryFilter">
+        <option value="">全部分类</option>
+        <option *ngFor="let category of vm.categories" [value]="category.id">{{ category.icon }} {{ category.name }}</option>
+      </select>
+    </label>
+    <label>
+      <span>价格排序</span>
+      <select [(ngModel)]="priceSort">
+        <option value="none">默认</option>
+        <option value="asc">价格从低到高</option>
+        <option value="desc">价格从高到低</option>
+      </select>
+    </label>
+    <div class="view-toggle">
+      <button type="button" class="toolbar-button" [class.primary]="viewMode === 'cards'" (click)="viewMode = 'cards'">卡片</button>
+      <button type="button" class="toolbar-button" [class.primary]="viewMode === 'table'" (click)="viewMode = 'table'">表格</button>
+    </div>
+  </section>
+
+  <section class="card-grid" *ngIf="viewMode === 'cards'">
+    <article *ngFor="let item of filteredItems(vm.items); trackBy: trackByItem" class="item-card-shell">
+      <app-menu-item-card [menuItem]="item"></app-menu-item-card>
+      <div class="row-actions">
+        <a [routerLink]="['/items', item.id]" class="toolbar-button">编辑</a>
+        <button type="button" class="toolbar-button danger" (click)="deleteCandidate = item">删除</button>
+      </div>
+    </article>
+  </section>
+
+  <section class="table-shell panel" *ngIf="viewMode === 'table'">
+    <table>
+      <thead>
+        <tr>
+          <th>菜品</th>
+          <th>分类</th>
+          <th>价格</th>
+          <th>辣度</th>
+          <th>标签</th>
+          <th>操作</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of filteredItems(vm.items); trackBy: trackByItem">
+          <td>
+            <strong>{{ item.name }}</strong>
+            <span>{{ item.description }}</span>
+          </td>
+          <td>
+            <app-category-badge *ngIf="categoryFor(item.categoryId, vm.categories) as category" [category]="category" size="sm"></app-category-badge>
+            <span *ngIf="!categoryFor(item.categoryId, vm.categories)" class="muted">未分类</span>
+          </td>
+          <td>{{ item.price | yuanCurrency }}</td>
+          <td>{{ item.spiceLevel | spiceLevel }}</td>
+          <td>
+            <span *ngIf="item.isRecommended" class="chip">推荐</span>
+            <span *ngIf="item.isVegetarian" class="chip green">素食</span>
+          </td>
+          <td class="table-actions">
+            <a [routerLink]="['/items', item.id]" class="toolbar-button">编辑</a>
+            <button type="button" class="toolbar-button danger" (click)="deleteCandidate = item">删除</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <p *ngIf="filteredItems(vm.items).length === 0" class="empty panel">没有找到符合条件的菜品。</p>
+
+  <app-confirm-dialog
+    [open]="deleteCandidate !== null"
+    title="删除菜品"
+    [message]="'确定删除“' + (deleteCandidate?.name || '') + '”吗？画布上已放置的项目会失去来源。'"
+    confirmLabel="删除"
+    (confirm)="confirmDelete()"
+    (cancel)="deleteCandidate = null"
+  ></app-confirm-dialog>
+</main>

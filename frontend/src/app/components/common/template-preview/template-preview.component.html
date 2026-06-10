@@ -1,0 +1,16 @@
+<div
+  class="template-preview"
+  [class.modern]="templateType === TemplateType.MODERN"
+  [class.card-template]="templateType === TemplateType.CARD"
+  [style.background]="layoutStyle.bgColor"
+  [style.color]="layoutStyle.textColor"
+>
+  <div class="preview-title" [style.border-color]="layoutStyle.accentColor">{{ layoutStyle.headerText }}</div>
+  <div class="preview-subtitle">{{ layoutStyle.subtitleText }}</div>
+  <span
+    *ngFor="let item of items"
+    class="preview-item"
+    [ngStyle]="itemStyle(item)"
+    [style.background]="layoutStyle.accentColor"
+  ></span>
+</div>

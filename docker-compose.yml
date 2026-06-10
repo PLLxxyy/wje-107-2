@@ -1,0 +1,9 @@
+name: wjemenudesigner
+
+services:
+  frontend:
+    build: ./frontend
+    container_name: ${COMPOSE_PROJECT_NAME:-wjemenudesigner}-frontend
+    restart: unless-stopped
+    ports:
+      - "${FRONTEND_PORT:-28607}:80"

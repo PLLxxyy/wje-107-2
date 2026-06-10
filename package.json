@@ -1,0 +1,9 @@
+{
+  "name": "wje-107-root",
+  "private": true,
+  "scripts": {
+    "build": "cd frontend && npm run build",
+    "start": "cd frontend && npm start",
+    "typecheck": "cd frontend && npm run typecheck"
+  }
+}
