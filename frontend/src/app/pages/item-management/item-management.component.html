@@ -52,6 +52,33 @@
           <span>素食</span>
         </label>
       </div>
+      <fieldset class="spec-section">
+        <legend>
+          <span>规格管理</span>
+          <button type="button" class="add-spec" (click)="addSpecification()">+ 添加规格</button>
+        </legend>
+        <p class="spec-hint" *ngIf="form.specifications.length === 0">未设置规格时，将展示统一价格。</p>
+        <div class="spec-list" *ngIf="form.specifications.length > 0">
+          <div *ngFor="let spec of form.specifications; let i = index; trackBy: trackBySpecIndex" class="spec-row">
+            <input
+              type="text"
+              [value]="spec.name"
+              (input)="updateSpecification(i, 'name', $any($event.target).value)"
+              placeholder="规格名称"
+              maxlength="20"
+            >
+            <input
+              type="number"
+              [value]="spec.price"
+              (input)="updateSpecification(i, 'price', $any($event.target).value)"
+              placeholder="价格"
+              min="0"
+              step="0.01"
+            >
+            <button type="button" class="remove-spec" (click)="removeSpecification(i)">×</button>
+          </div>
+        </div>
+      </fieldset>
       <p class="error" *ngIf="errorMessage">{{ errorMessage }}</p>
       <button type="submit" class="toolbar-button primary">{{ isEditing ? '保存修改' : '创建菜品' }}</button>
     </form>
@@ -63,7 +90,13 @@
       </div>
       <h2>{{ form.name || '菜品名称' }}</h2>
       <p>{{ form.description || '菜品描述会显示在这里。' }}</p>
-      <strong>{{ pricePreview }}</strong>
+      <strong *ngIf="form.specifications.length === 0">{{ pricePreview }}</strong>
+      <div *ngIf="form.specifications.length > 0" class="preview-specs">
+        <div *ngFor="let spec of form.specifications; let i = index; trackBy: trackBySpecIndex" class="preview-spec">
+          <span>{{ spec.name || '规格' + (i + 1) }}</span>
+          <strong>¥{{ (spec.price || 0).toFixed(2) }}</strong>
+        </div>
+      </div>
     </aside>
   </section>
 </main>

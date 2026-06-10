@@ -1,4 +1,4 @@
-import { NgIf } from '@angular/common';
+import { NgFor, NgIf } from '@angular/common';
 import { Component, Input } from '@angular/core';
 import { MenuItem } from '../../../models/menu-item.model';
 import { CurrencyPipe } from '../../../pipes/currency.pipe';
@@ -8,7 +8,7 @@ import { SpiceIconComponent } from '../spice-icon/spice-icon.component';
 @Component({
   selector: 'app-menu-item-card',
   standalone: true,
-  imports: [NgIf, CurrencyPipe, SpiceLevelPipe, SpiceIconComponent],
+  imports: [NgFor, NgIf, CurrencyPipe, SpiceLevelPipe, SpiceIconComponent],
   templateUrl: './menu-item-card.component.html',
   styleUrl: './menu-item-card.component.css'
 })
@@ -22,5 +22,13 @@ export class MenuItemCardComponent {
 
   get hasImage(): boolean {
     return this.menuItem.image.startsWith('data:image');
+  }
+
+  get hasSpecifications(): boolean {
+    return this.menuItem.specifications.length > 0;
+  }
+
+  trackBySpecId(_index: number, spec: { id: string }): string {
+    return spec.id;
   }
 }

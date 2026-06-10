@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, combineLatest, map } from 'rxjs';
 import { Category, CategoryInput } from '../models/category.model';
 import { SpiceLevel } from '../models/enums';
-import { MenuItem, MenuItemInput } from '../models/menu-item.model';
+import { MenuItem, MenuItemInput, Specification } from '../models/menu-item.model';
 import { StorageService } from './storage.service';
 
 @Injectable({
@@ -61,6 +61,7 @@ export class MenuService {
       id: this.createId(),
       description: input.description.slice(0, 200),
       price: this.normalizePrice(input.price),
+      specifications: this.toSpecifications(input.specifications),
       createdAt: now,
       updatedAt: now
     };
@@ -76,6 +77,7 @@ export class MenuService {
           ...input,
           description: input.description.slice(0, 200),
           price: this.normalizePrice(input.price),
+          specifications: this.toSpecifications(input.specifications),
           updatedAt: Date.now()
         }
       : item
@@ -159,6 +161,14 @@ export class MenuService {
     return Math.max(0, Math.round(value * 100) / 100);
   }
 
+  private toSpecifications(inputs: import('../models/menu-item.model').SpecificationInput[]): Specification[] {
+    return (inputs ?? []).map((spec) => ({
+      id: this.createId(),
+      name: spec.name.trim(),
+      price: this.normalizePrice(spec.price)
+    }));
+  }
+
   private seedCategories(): Category[] {
     return [
       { id: 'cat-appetizer', name: '开胃菜', sortOrder: 1, color: '#FF6B35', icon: '🥗' },
@@ -172,21 +182,21 @@ export class MenuService {
     const categoryId = (name: string) => categories.find((category) => category.name === name)?.id ?? '';
     const now = Date.now();
     const rows: Array<Omit<MenuItem, 'id' | 'createdAt' | 'updatedAt' | 'image' | 'categoryId'> & { category: string; icon: string }> = [
-      { name: '凯撒沙拉', description: '罗马生菜、帕玛森芝士与烤面包粒，口感清爽。', price: 38, category: '开胃菜', icon: '🥗', isRecommended: false, spiceLevel: SpiceLevel.NONE, isVegetarian: false },
-      { name: '蒜香面包', description: '外脆内软的手工法棍，搭配浓郁蒜香黄油。', price: 22, category: '开胃菜', icon: '🥖', isRecommended: false, spiceLevel: SpiceLevel.NONE, isVegetarian: true },
-      { name: '四川口水鸡', description: '红油椒香与鲜嫩鸡肉融合，适合作为招牌前菜。', price: 45, category: '开胃菜', icon: '🍗', isRecommended: true, spiceLevel: SpiceLevel.MEDIUM, isVegetarian: false },
-      { name: '香煎三文鱼', description: '低温慢煎三文鱼配时蔬与柠檬黄油汁。', price: 128, category: '主菜', icon: '🐟', isRecommended: true, spiceLevel: SpiceLevel.NONE, isVegetarian: false },
-      { name: '黑椒牛排', description: '精选牛排搭配黑椒汁，外焦内嫩。', price: 168, category: '主菜', icon: '🥩', isRecommended: true, spiceLevel: SpiceLevel.MILD, isVegetarian: false },
-      { name: '宫保鸡丁', description: '鸡丁、花生与干辣椒快炒，咸甜微辣。', price: 58, category: '主菜', icon: '🍛', isRecommended: false, spiceLevel: SpiceLevel.MEDIUM, isVegetarian: false },
-      { name: '意式海鲜意面', description: '鲜虾、贝类与番茄白酒汁包裹劲道意面。', price: 88, category: '主菜', icon: '🍝', isRecommended: false, spiceLevel: SpiceLevel.NONE, isVegetarian: false },
-      { name: '麻婆豆腐', description: '豆腐软嫩，花椒麻香明显，热辣下饭。', price: 38, category: '主菜', icon: '🌶️', isRecommended: false, spiceLevel: SpiceLevel.HOT, isVegetarian: true },
-      { name: '素食咖喱', description: '椰香咖喱搭配根茎蔬菜，温和饱满。', price: 48, category: '主菜', icon: '🍛', isRecommended: false, spiceLevel: SpiceLevel.MILD, isVegetarian: true },
-      { name: '提拉米苏', description: '马斯卡彭奶油与咖啡酒香层层叠合。', price: 42, category: '甜品', icon: '🍮', isRecommended: true, spiceLevel: SpiceLevel.NONE, isVegetarian: false },
-      { name: '芒果布丁', description: '果香浓郁，口感顺滑，适合餐后分享。', price: 32, category: '甜品', icon: '🥭', isRecommended: false, spiceLevel: SpiceLevel.NONE, isVegetarian: false },
-      { name: '抹茶冰淇淋', description: '抹茶茶香清苦，奶香收尾柔和。', price: 28, category: '甜品', icon: '🍨', isRecommended: false, spiceLevel: SpiceLevel.NONE, isVegetarian: true },
-      { name: '经典莫吉托', description: '青柠、薄荷与气泡感组合，清爽解腻。', price: 35, category: '饮品', icon: '🍹', isRecommended: false, spiceLevel: SpiceLevel.NONE, isVegetarian: true },
-      { name: '鲜榨橙汁', description: '每日鲜榨，酸甜平衡。', price: 25, category: '饮品', icon: '🍊', isRecommended: false, spiceLevel: SpiceLevel.NONE, isVegetarian: true },
-      { name: '拿铁咖啡', description: '浓缩咖啡与绵密奶泡，温润香醇。', price: 32, category: '饮品', icon: '☕', isRecommended: false, spiceLevel: SpiceLevel.NONE, isVegetarian: true }
+      { name: '凯撒沙拉', description: '罗马生菜、帕玛森芝士与烤面包粒，口感清爽。', price: 38, category: '开胃菜', icon: '🥗', isRecommended: false, spiceLevel: SpiceLevel.NONE, isVegetarian: false, specifications: [] },
+      { name: '蒜香面包', description: '外脆内软的手工法棍，搭配浓郁蒜香黄油。', price: 22, category: '开胃菜', icon: '🥖', isRecommended: false, spiceLevel: SpiceLevel.NONE, isVegetarian: true, specifications: [] },
+      { name: '四川口水鸡', description: '红油椒香与鲜嫩鸡肉融合，适合作为招牌前菜。', price: 45, category: '开胃菜', icon: '🍗', isRecommended: true, spiceLevel: SpiceLevel.MEDIUM, isVegetarian: false, specifications: [{ id: 'spec-1', name: '小份', price: 38 }, { id: 'spec-2', name: '大份', price: 58 }] },
+      { name: '香煎三文鱼', description: '低温慢煎三文鱼配时蔬与柠檬黄油汁。', price: 128, category: '主菜', icon: '🐟', isRecommended: true, spiceLevel: SpiceLevel.NONE, isVegetarian: false, specifications: [{ id: 'spec-3', name: '单人份', price: 128 }, { id: 'spec-4', name: '双人份', price: 228 }] },
+      { name: '黑椒牛排', description: '精选牛排搭配黑椒汁，外焦内嫩。', price: 168, category: '主菜', icon: '🥩', isRecommended: true, spiceLevel: SpiceLevel.MILD, isVegetarian: false, specifications: [{ id: 'spec-5', name: '6盎司', price: 128 }, { id: 'spec-6', name: '8盎司', price: 168 }, { id: 'spec-7', name: '12盎司', price: 238 }] },
+      { name: '宫保鸡丁', description: '鸡丁、花生与干辣椒快炒，咸甜微辣。', price: 58, category: '主菜', icon: '🍛', isRecommended: false, spiceLevel: SpiceLevel.MEDIUM, isVegetarian: false, specifications: [] },
+      { name: '意式海鲜意面', description: '鲜虾、贝类与番茄白酒汁包裹劲道意面。', price: 88, category: '主菜', icon: '🍝', isRecommended: false, spiceLevel: SpiceLevel.NONE, isVegetarian: false, specifications: [] },
+      { name: '麻婆豆腐', description: '豆腐软嫩，花椒麻香明显，热辣下饭。', price: 38, category: '主菜', icon: '🌶️', isRecommended: false, spiceLevel: SpiceLevel.HOT, isVegetarian: true, specifications: [] },
+      { name: '素食咖喱', description: '椰香咖喱搭配根茎蔬菜，温和饱满。', price: 48, category: '主菜', icon: '🍛', isRecommended: false, spiceLevel: SpiceLevel.MILD, isVegetarian: true, specifications: [] },
+      { name: '提拉米苏', description: '马斯卡彭奶油与咖啡酒香层层叠合。', price: 42, category: '甜品', icon: '🍮', isRecommended: true, spiceLevel: SpiceLevel.NONE, isVegetarian: false, specifications: [] },
+      { name: '芒果布丁', description: '果香浓郁，口感顺滑，适合餐后分享。', price: 32, category: '甜品', icon: '🥭', isRecommended: false, spiceLevel: SpiceLevel.NONE, isVegetarian: false, specifications: [] },
+      { name: '抹茶冰淇淋', description: '抹茶茶香清苦，奶香收尾柔和。', price: 28, category: '甜品', icon: '🍨', isRecommended: false, spiceLevel: SpiceLevel.NONE, isVegetarian: true, specifications: [] },
+      { name: '经典莫吉托', description: '青柠、薄荷与气泡感组合，清爽解腻。', price: 35, category: '饮品', icon: '🍹', isRecommended: false, spiceLevel: SpiceLevel.NONE, isVegetarian: true, specifications: [] },
+      { name: '鲜榨橙汁', description: '每日鲜榨，酸甜平衡。', price: 25, category: '饮品', icon: '🍊', isRecommended: false, spiceLevel: SpiceLevel.NONE, isVegetarian: true, specifications: [] },
+      { name: '拿铁咖啡', description: '浓缩咖啡与绵密奶泡，温润香醇。', price: 32, category: '饮品', icon: '☕', isRecommended: false, spiceLevel: SpiceLevel.NONE, isVegetarian: true, specifications: [{ id: 'spec-8', name: '中杯', price: 32 }, { id: 'spec-9', name: '大杯', price: 38 }] }
     ];
 
     return rows.map((row, index) => ({

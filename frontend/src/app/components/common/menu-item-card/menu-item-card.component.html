@@ -7,9 +7,14 @@
   <div class="content">
     <div class="title-row">
       <h3>{{ menuItem.name }}</h3>
-      <strong>{{ menuItem.price | yuanCurrency }}</strong>
+      <strong *ngIf="!hasSpecifications">{{ menuItem.price | yuanCurrency }}</strong>
     </div>
     <p *ngIf="!compact">{{ menuItem.description }}</p>
+    <div *ngIf="hasSpecifications" class="spec-list">
+      <span *ngFor="let spec of menuItem.specifications; trackBy: trackBySpecId" class="spec-item">
+        {{ spec.name }} {{ spec.price | yuanCurrency }}
+      </span>
+    </div>
     <div class="meta-row">
       <app-spice-icon [level]="menuItem.spiceLevel" [size]="compact ? 12 : 14"></app-spice-icon>
       <span class="chip">{{ menuItem.spiceLevel | spiceLevel }}</span>

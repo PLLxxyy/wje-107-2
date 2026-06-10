@@ -3,7 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { SpiceLevel } from '../../models/enums';
-import { MenuItemInput } from '../../models/menu-item.model';
+import { MenuItemInput, SpecificationInput } from '../../models/menu-item.model';
 import { MenuService } from '../../services/menu.service';
 import { UnsavedChangesAware } from '../../guards/unsaved-changes.guard';
 
@@ -47,7 +47,8 @@ export class ItemManagementComponent implements OnInit, UnsavedChangesAware {
           image: item.image,
           isRecommended: item.isRecommended,
           spiceLevel: item.spiceLevel,
-          isVegetarian: item.isVegetarian
+          isVegetarian: item.isVegetarian,
+          specifications: item.specifications.map((spec) => ({ name: spec.name, price: spec.price }))
         };
       }
     }
@@ -131,7 +132,34 @@ export class ItemManagementComponent implements OnInit, UnsavedChangesAware {
       image: 'icon:🍽️',
       isRecommended: false,
       spiceLevel: SpiceLevel.NONE,
-      isVegetarian: false
+      isVegetarian: false,
+      specifications: []
     };
+  }
+
+  addSpecification(): void {
+    this.form = {
+      ...this.form,
+      specifications: [...this.form.specifications, { name: '', price: 0 }]
+    };
+    this.markDirty();
+  }
+
+  removeSpecification(index: number): void {
+    const updated = [...this.form.specifications];
+    updated.splice(index, 1);
+    this.form = { ...this.form, specifications: updated };
+    this.markDirty();
+  }
+
+  updateSpecification(index: number, field: keyof SpecificationInput, value: string | number): void {
+    const updated = [...this.form.specifications];
+    updated[index] = { ...updated[index], [field]: field === 'price' ? Number(value) : value };
+    this.form = { ...this.form, specifications: updated };
+    this.markDirty();
+  }
+
+  trackBySpecIndex(index: number): number {
+    return index;
   }
 }
